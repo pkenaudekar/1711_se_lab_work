@@ -27,23 +27,27 @@ class LiftMovement extends LiftMovesUpDown{
                 System.out.println("Select floor number from 0 to " + (totalFloor - 1) +", select -1 to accept request, select -2 to shut down the lift:");
                 Scanner input = new Scanner(System.in);
                 selectFloor = input.nextInt();
-                if(selectFloor >= 0 && selectFloor < totalFloor)
+
+                if(selectFloor== -1 || selectFloor == -2 || selectFloor >= 0 && (selectFloor <= (totalFloor-1)))
                 {
-                    //System.out.println("Floor's was selected");//
-                    lift[selectFloor] = 1;
+                    if (selectFloor >= 0 && selectFloor < totalFloor) {
+                        lift[selectFloor] = 1;
+                    }
+                    else if (selectFloor == -2)
+                    {
+                        System.out.println("People exited on floor " + currentFloor + " are:" + currentLoad);
+                        System.out.println("Lift is switched off.");
+                        powerState = 0;
+                        System.exit(0);
+                    }
                 }
-                else if(selectFloor == -2)
+                else
                 {
-                    System.out.println("People exited on floor "+currentFloor+" are:"+currentLoad );
-                    System.out.println("Lift is switched off.");
-                    powerState = 0;
-                    System.exit(0);
+                    System.out.println("Invalid option selected try again.");
                 }
             }
             System.out.println("Floor(s) were selected");
 
-            //addPeople = ((int)(Math.random() * (maxLoad - currentLoad) + 1));
-            //addPeople = 0 + (int)(Math.random() * (((maxLoad - currentLoad) - 0) + 1));
             Random people = new Random();
             enterPeople = people.nextInt(maxLoad - currentLoad);
             currentLoad = currentLoad + enterPeople;
@@ -55,7 +59,6 @@ class LiftMovement extends LiftMovesUpDown{
             if(direction == 1)
             {
                 nextFloorUp = 0;
-                //floor = currentFloor;
                 while (floor < totalFloor)
                 {
                     if(lift[floor] == 1)
@@ -68,13 +71,11 @@ class LiftMovement extends LiftMovesUpDown{
                 if(nextFloorUp == 0)
                 {
                     this.direction = 0;
-                    //System.out.println("\ndirect = 0"); //
                 }
             }
             else
             {
                 nextFloorDown = 0;
-                //floor = currentFloor;
                 while (floor >= 0)
                 {
                     if(lift[floor] == 1)
@@ -87,7 +88,6 @@ class LiftMovement extends LiftMovesUpDown{
                 if(nextFloorDown == 0)
                 {
                     this.direction = 1;
-                    //System.out.println("\ndirect = 1"); //
                 }
             }
 
@@ -105,37 +105,20 @@ class LiftMovement extends LiftMovesUpDown{
                 System.out.print("  <-Lift Going Down");
             }
 
-            //if (currentFloor == totalFloor - 1 || (currentLoad == 0 && nextFloor < currentFloor) || (direction == 0 && currentLoad > 0))
             if ((currentFloor == totalFloor - 1 && direction == 0) || (direction == 0 && currentLoad > 0) || (currentFloor == totalFloor -1 && direction == 1))
             {
-                //System.out.println("\n1st if entered"); //
                 LiftMovesDown(currentFloor, currentLoad, totalFloor, direction, maxLoad ,lift);
             }
-            //else if (currentFloor == 0 || (currentLoad == 0 && nextFloor > currentFloor) || (direction == 1 && currentLoad > 0))
             else if ((currentFloor == 0 && direction == 1) || (direction == 1 && currentLoad > 0) || (currentFloor == 0 && direction == 0))
             {
-                //System.out.println("\n2nd if entered");//
                 LiftMovesUp(currentFloor, currentLoad, totalFloor, direction, maxLoad, lift);
-
             }
             direction = getDirection();
             currentFloor=getCurrentFloor();
-            lift[currentFloor] = 0;//
+            lift[currentFloor] = 0;
             selectFloor = 0;
 
-            //exitPeople = people.nextInt(currentLoad);
-            //System.out.println("\nPeople exited:"+ exitPeople);//
-            //currentLoad = currentLoad-exitPeople;
-            //System.out.println("*********MAIN PAGE RETURN DETAILS*********\n");//
-            /*for(int i = 0; i < lift.length; i++)//
-            {
-                System.out.print(lift[i]+" ");
-            }*/
-            //System.out.println("\nDirection: "+direction);//
-            //System.out.println("Current floor : "+currentFloor+"\n");//
             currentLoad = currentLoad-getExitPeople();
-            //System.out.println("People in lift:"+ currentLoad); //
-
         }
     }
 }
