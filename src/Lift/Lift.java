@@ -6,6 +6,9 @@ public class Lift {
 
     public static void main(String[] args) {
         int option;
+        AdminPanel panel = AdminPanel.getInstance();
+        System.out.println("Version:"+ panel.getVersionNum());
+
         LiftMovement lift = new LiftMovement();
         do {
             System.out.println("Switch on power? 1-Yes, 2-No:");
